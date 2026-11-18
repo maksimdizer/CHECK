@@ -4,6 +4,10 @@ CHECK is a self-hosted quality assurance application for closed support conversa
 
 [Quick start](#quick-start) · [Agent review loop](#agent-review-loop) · [DCH-2 results](#dch-2-results) · [Case study](#case-study-of-a-promised-follow-up)
 
+![CHECK shows the support team's promised follow-up, the customer's highlighted request for a base station, and Gemma 4 26B's Unresolved verdict with links to eight messages.](docs/images/dch2-promised-follow-up.png)
+
+In DCH-2 ticket **4238092258439474**, Gemma 4 26B marked the issue **Unresolved**. Selecting `Message t007-u001` highlights the customer's final request on the left. The benchmark uses placeholder timestamps to preserve turn order. [Case study](#case-study-of-a-promised-follow-up) · [DCH-2 dialogue terms](https://dialeval-2.github.io/DCH-2/terms)
+
 ## Agent review loop
 
 In local agent mode, CHECK builds a map of the customer's requests and the agent's commitments, with links to the original messages. It reuses that map across criteria. For a short ticket it reads the full exchange. For a longer one it can look up a message, read its neighbors, or search for exact text.
