@@ -2,6 +2,58 @@
 
 CHECK is a self-hosted quality assurance application for closed support conversations. It imports tickets, evaluates replies against a versioned scorecard, and shows reviewers the evidence behind each verdict. Use a local model or connect a cloud provider.
 
+[Quick start](#quick-start) · [Agent review loop](#agent-review-loop) · [DCH-2 results](#dch-2-results) · [Case study](#case-study-of-a-promised-follow-up)
+
+## Agent review loop
+
+In local agent mode, CHECK builds a map of the customer's requests and the agent's commitments, with links to the original messages. It reuses that map across criteria. For a short ticket it reads the full exchange. For a longer one it can look up a message, read its neighbors, or search for exact text.
+
+```mermaid
+flowchart TD
+    facts["Map the facts in the visible conversation"] --> read["Read evidence for one scorecard criterion"]
+    read --> draft["Draft a verdict and cite the excerpts"]
+    draft --> check{"Check the rubric and citations"}
+    check -->|"Supported"| save["Save verdict and evidence"]
+    check -->|"Needs a second look"| review["Reassess against the original sources"]
+    review --> check
+    check -->|"Evidence insufficient"| abstain["Leave the criterion unscored"]
+```
+
+For **response completeness**, a draft `pass` triggers a second search for overlooked requests. If it finds one, the agent checks which later reply addressed it. For **ownership**, it checks who promised the next action and whether it came due. Review passes are bounded. CHECK verifies cited text against the saved sources and exposes the evidence trail in `result.agent_trace`. Timing and other rule-based checks run separately. [Agent implementation](backend/qa/agent.py) · [Citation verification](backend/qa/evidence.py)
+
+## DCH-2 results
+
+All four configurations assessed the same **20 English support dialogues**. DCH-2 annotators rated how far each customer's problem was solved on a scale from −2 to +2 (the **A-score**). Eleven dialogues had a negative majority, five had a positive majority, and four had neither. The first two rows show how often CHECK assigned the corresponding final status in each group. A proposed fix can earn positive human votes while CHECK still waits for confirmation. [DCH-2 dataset and annotation guide](https://dialeval-2.github.io/DCH-2/)
+
+| Measure | Gemma 4 12B IT | Gemma 4 26B A4B | GPT-6.1 Terra | GPT-6 Astra |
+| --- | ---: | ---: | ---: | ---: |
+| Negative-majority tickets called `unresolved` | 3 / 11 | 7 / 11 | 6 / 11 | 7 / 11 |
+| Positive-majority tickets called `resolved` | 1 / 5 | 1 / 5 | 2 / 5 | 2 / 5 |
+| Tickets with a verified source quote for the outcome | 20 / 20 | 20 / 20 | 17 / 20 | 20 / 20 |
+| Mean weighted scorecard coverage | 67.8% | 72.4% | 66.9% | 68.9% |
+| Median evaluation time per ticket | 6 min 19 s | 2 min 43 s | 1 min 02 s | 1 min 36 s |
+| Mean model API cost per ticket (USD) | $0 locally | $0 locally | ~$0.039 | ~$0.496 |
+
+On these 20 tickets, Gemma 26B gave the widest scorecard coverage and flagged as many negative-majority cases as Astra. Terra flagged one fewer at about four cents per ticket. The local 12B run also assessed each individual customer request, adding work to its timing. [Per-ticket measurements (CSV)](docs/dch2-results.csv)
+
+<details>
+<summary>Run settings, metric definitions and cost calculation</summary>
+
+- **Sample.** We sorted the English DCH-2 development set by mean A-score, divided the eligible dialogues into 20 bands, and took the longest exchange by message count in each band. The sample spans easy and ambiguous outcomes. Human labels cover task accomplishment, satisfaction and effectiveness. CHECK's individual QA criteria have no human labels in this comparison.
+- **Runs.** Gemma ran locally with MLX, the English v5 scorecard and agent v13 in Quality mode (12B at 4-bit, 26B at 3-bit). Terra and Astra used the Russian v4 scorecard and ten direct Codex CLI calls per ticket at medium reasoning effort. All runs had an empty policy library. The table compares these complete configurations.
+- **Metrics.** A majority means more than half of all votes are negative or positive. A verified quote is an excerpt found in the cited message. Coverage measures how much applicable criterion weight received a score. We use the 11 criteria shared with v5, round each ticket's coverage to a whole percent as CHECK does, then average all 20. The four dialogues without a majority count in coverage, timing and cost.
+- **Time and cost.** Gemma time is evaluator runtime excluding queue wait. For Terra and Astra we sum the ten recorded call durations per ticket, including CLI startup, so resumed work counts in full. Local inference incurred zero model API fees. Electricity and hardware costs were unmeasured. For the cloud runs we priced recorded uncached input, cached input and output tokens at standard API rates on November 18, 2026, then divided by 20. Rates in USD per million tokens were 1 / 0.05 / 5 for Terra and 10 / 1 / 50 for Astra. These are API-equivalent estimates for the CLI runs. [Terra pricing](https://developers.openai.com/api/docs/models/gpt-6.1-terra) · [Astra pricing](https://developers.openai.com/api/docs/models/gpt-6-astra)
+
+Vote counts in the per-ticket file are derived from the DialEval-2 organizers' annotations under CC BY 4.0. [DCH-2 terms and annotation license](https://dialeval-2.github.io/DCH-2/terms)
+
+</details>
+
+### Case study of a promised follow-up
+
+In dialogue **4238092258439474**, a customer reported that a mobile network issue persisted. Support promised that two regional teams would follow up (turn 4). The customer questioned how long that would take (turn 5) and ended by asking for the base station to be built (turn 7).
+
+Gemma 12B cited the promised follow-up and returned `solution_proposed`. Gemma 26B, Terra and Astra returned `unresolved`, citing the customer's continuing request. **Nineteen of 20 annotators gave task accomplishment a negative score** and one voted neutral. All four models gave support partial credit for ownership. The team had identified who would act, but the customer's last message still asked for the work to be done.
+
 ## Quick start
 
 Install Docker with Compose, then run:
