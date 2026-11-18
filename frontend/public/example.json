@@ -1,0 +1,26 @@
+{
+  "source": "import",
+  "language": "en",
+  "external_id": "QA-1050",
+  "subject": "Order confirmation email",
+  "status": "closed",
+  "messages_complete": true,
+  "messages": [
+    {
+      "id": "m1",
+      "actor_id": "customer-1",
+      "author": "Customer",
+      "role": "customer",
+      "at": "2026-11-12T09:00:00-06:00",
+      "text": "I haven’t received my order confirmation email."
+    },
+    {
+      "id": "m2",
+      "actor_id": "agent-1",
+      "author": "Alexey",
+      "role": "agent",
+      "at": "2026-11-12T09:07:00-06:00",
+      "text": "I resent the email. If it doesn’t appear in your inbox, check your spam folder."
+    }
+  ]
+}

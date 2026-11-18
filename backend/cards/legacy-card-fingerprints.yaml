@@ -1,0 +1,129 @@
+# Exact text fingerprints for localizing unedited fields in older scorecards.
+criteria:
+  action_trace:
+    applicability: 8e647cd351d0ea5d1b333191cabc3ac3e1b9e64a24acacad66442dbfe5baadeb
+    description: 5900dd9bb27429687204a40dae7927b211a4575667a0690a56a723245ab6d679
+    name: 01c078e4673b9617cebdddb58c37699c5f07ce1dd90a9877c5f331edf133866e
+    rubric:
+      fail: d4e4eb3cf457e209a84cb8b61b34ad2e7144636b788c4e4c8c05bd2c0c95af8e
+      insufficient_evidence: 66a8fc21a11e5223abed94c796ff65aa64ed54c0ad362e239e73bfdf4b850cb4
+      not_applicable: 4e6192ac09a0002e9d43afc3f7e06d49d0ca8a7ab3a6eaae82c9c9a7e2b5ee42
+      pass: 5eca36c68c81c61cfc212cde6dc9c56d15e79de08981f19f5ff5a04e334dd381
+  clarity:
+    applicability: 658b5ced1454aa18f379ff8cf7a98219e0207bc7fe907b0b77fda0d516b4da5f
+    description: 8f80ec833d1b917a7029fcd5951d79e19ce00f75f4c8474d6d8a0fe56c84cb35
+    name: 512415b9e1aa524e160189c30de128afe5ed05bad585e1dacb638d17ccf703a6
+    rubric:
+      fail: 93446340ee2234bcfda4328c164313c59c3fc4b1c406f31315bcedb8a33190f1
+      insufficient_evidence: 8f0083d312ceda3f19eb6ed376ed0e565ce5d1c8d709c4475422542256c886e0
+      not_applicable: c46b1bce550505a3827d792ac77b8daca420b4974c884f102d30a9441c746ae5
+      partial: 65ff5d103770aebc67110e3d895497b2286761b46ec2a0e39c930382fe837f00
+      pass: 74304422ab485da1ffb4015aee82d06424ae50bd9668b6c2a73e02960927d8d9
+  completeness:
+    applicability: 2a0c6ff5ad782b21d2f910a137dc1b5461ec0c017ef96b5acede37b8c5270c45
+    description: d108b5cbfc254d19bebdd3a1c910aca23b55559caa3d7a2f0bdfff025998bf0b
+    name: 46111c9cc6f2f0156e3da227edc688e3f8d09fef7999cc95acce3846b32b25f5
+    rubric:
+      fail: 776730fef250f4a1963d0fef8193605b8e484fa9b733a9ef8ba92b098eda4a40
+      insufficient_evidence: c1ceeb038aa13e96ec298a58f8fa219388c10e2df8802533348794fc2c3a2c53
+      not_applicable: 2ae30e0fbec280b10c21dbd56ddf3f9f290323303e9e57e0c65f61cb3a17b308
+      partial: aee2b8de6ce06a538d96a47acc6d07b78f5375a5e154ae30b19d2a32491fe842
+      pass: 01956f16a9e73c9e2e0bc3af179335152d3bed91c9af365785b0fe41f8aa6c65
+  customer_effort:
+    applicability: c7babbd5a12cfb50fd6b48a9b34dda699f0f48ca142bc3a9fea8342eb3c6c694
+    description: 82ceefb3a15d3d98b24c5efe40efc5a74ca2d107686d8e12a8bac993da3bfc73
+    name: 54b625c59302df46069b0253546f1537e64a62a34d29242e5d6650ce80388961
+    rubric:
+      fail: 577eadb921a3a0ce2dd872e9090750d6d4885360e53d9c747e340fbd35c269d5
+      insufficient_evidence: edf236930557b532d1b06a28995c7893498bd3a6e6ad8305e5e04b7a90a7a01d
+      not_applicable: b8ed4d2ce7129a434dd1986d4bb11841934872645eac4d32210a8caeb3ef1f9f
+      partial: 2312a3a1e4d1ec0ce4b868c620cadd0ac4a51db34ebe3d7eac72eb2b2b06f7ae
+      pass: 0ec6147e6ac04d1e991da53a0d61fa2da6858dbf54d4d37615752e46d3798fb3
+  diagnosis:
+    applicability: d2c549d65c8e74b1ff973d17729752ad3d81b23f8593d3a7802cfe8d9f973051
+    description: c9055d4f7549f1ff9392fac940e33ce884060be79cee764d0e7d2687c1ef53d0
+    name: da4da4e3527ca8af815cf88544eb8de40f4f0b8aafa9b5d7bf55ab89cb36f67a
+    rubric:
+      fail: 46acf7aeda42324ef5cb53ddccf5f802d10737960111e973724230516521e0f9
+      insufficient_evidence: 2c58d00c7d13753dbd7afa33ae53ea2ee7f41deb057fb226c33a39b82d0a2725
+      not_applicable: 7a294020eeaef357e1b56ba66f2f7f22c4828e1f00fa9f1eb1d665a023a8edc6
+      partial: c2da4c9015fa7a22553ef6eaddf59aa1a6826cf347e2fa52b361a9107dcab781
+      pass: b04c38e3a5c4e26a217bba7118214bfcceeffea86f1e70363480f28f5697c31a
+  first_response:
+    name: 470e8281b152697f8b0a6608596301435940771cc797295f7370745341fd7453
+  ownership:
+    applicability: 7af74f45686f34b4ad0b8cf38979a7e1504bd02d9cefb4a9ffba51cbbc600d80
+    description: 33c3e8e29fb760d1ed5f62f9ed297d1d52c63d20705a6bcd1bdc11da212e92fa
+    name: 7c2c5ebb86930bcbb62cf66ad8c60012fd171d72ffeea3c0bc0aeb3f71b4bb90
+    rubric:
+      fail: fd9514125876ffb0169dedb94582e429c84e5d4264657141b2114f9e6d9e9ce2
+      insufficient_evidence: a6253f695a19db190abbbcec65ee58307fcf0680e431524d19394b6cb5b8a04a
+      not_applicable: 8529fcde849f101560a6ec1973b265ac23883621e8eb3d72d0d90d93443b2d11
+      partial: 357ad1ba453dd7935bdf0c88e202cf700af61b0c18e4aa6e29e987e96d051389
+      pass: e067dc7cd3df0cfc0acd7ade39c236045c8dd425b4662f60a20f18b35ba02c88
+  policy_accuracy:
+    applicability: 55fa5fa0cbbdb3abe793872fdeb61595f253d4c57e3a40f9f41a2449ae39fbe2
+    description: 5ede5c802fc55a35a0c5b8ae6fac027876531e20d2a5e828828fad2290f2446f
+    name: 07e8e39d4c91df576471af8fa164346cc288604a0fee4ab02accd23f733c8e03
+    rubric:
+      fail: d9d1790e96e58e6a8f252177da1767110fb6703999e71e8f42a6fdf5c2bb8680
+      insufficient_evidence: fa6e38e3d94acc3eeca33f6da4ea6058535945a06a1ab7d5fb331c5e5d64c8c5
+      not_applicable: 454523659d36d775a4bdf6e0ee77bc196029615131cf3a751cf6c34d3ed5a028
+      partial: 0ec278b20d377f682c07db338ad19686138bc16728b8e88d5535a73851160447
+      pass: 8935082e5d91b4565e81b57058aae98db5b9fd75f5a498e72c4de5b4c58484c3
+  request_understanding:
+    applicability: 12530ba869545fa69e3bf2f5c3a04c9bd696c458b6bd52f3b37ea963d7641bdb
+    description: 5b7d2a2aecc4ac97148d8178b117ff0300b3a98e46afebcf0151a1303f86cfcc
+    name: 6b92ffbb3383d8e2618f051aa6c457dbd9cc19eff8cbf8ea8d6b3cdbcb3107c0
+    rubric:
+      fail: 8facb0df74548f759207c555ff71e588d7af9f4545b0f6b1e62e06e66ead86b8
+      insufficient_evidence: 602b5c5c5bc90ba1e4cdb48136a5ede7f264f361c6749b36e59ea4562b4cd8d5
+      not_applicable: 476a677d1edd9f5c5ef65389c2eede2118274874b95d18ac1f88b2b26ae2dd86
+      partial: 3788574d1ab24b5a8bd50f302f3b97d978f8f9f86bf35fc9230de56800b99626
+      pass: c02d284ab6cb965996ac61a4c81de3ae43a4fc485ab678f63b70df7a8a265eec
+  resolution_check:
+    applicability: 932b9cb679f549803b90a6dfc0be4874ae967825be8a4a1895d7c69e702e8fc3
+    description: a1ed431ede812f1fbcce52924b5fc4933e510198823b10883437b83f1f202b9e
+    name: 249252f894ee08913260fa9ba6a6caf6356d023dccabe6c1f19e95684022a942
+    rubric:
+      fail: d61585452f781a459b29d074794a1ed788c7957af07caa55fd45500c5e26fa72
+      insufficient_evidence: 892f93625a3571092f9b1917c38f128ef6eee2f744834de15520bd212fc56487
+      not_applicable: 482bb54ed572a52a0f30bac309aeb628c6919673128409b4163894f17b5fe327
+      partial: c1b6ca7befe0b1656a92d2272babe3e49d4df49e8b403434005b08aebc16c59f
+      pass: 21112ea47cb13c0e82a9516dbc741c58fa9d31682ebc2c58c015721abd8aece7
+  respect:
+    applicability: 658b5ced1454aa18f379ff8cf7a98219e0207bc7fe907b0b77fda0d516b4da5f
+    description: cf833cfd296fa95fff53c303f88f98203c92d3085a9fa20b35c1d113b873a5cb
+    name: 56ed54ccc2c17aa726c23e9d78aee7a863741a04cda7c0ea03da195a8941231d
+    rubric:
+      fail: e8af002598acaa15e7f5ef34262acc14359dad4bf481c76269128401d0e10d0c
+      insufficient_evidence: 34dfaeddd07c923d7b6816f08a7d3cee1f8244d3566f78a4239bea30c4777a6b
+      partial: 70008f312b9c48b3572411a45b471dce6d663fc89b150ff5db4fc7263b949d17
+      pass: 3e4c5ea58972dcdc5b0262561f4f6c66df9035cfa379070773857c4ba547fc37
+  response_present:
+    applicability: 21358deaae9a4dba91fcf8fcd5b7a43b1c12b7937512daaae86068046f2c3a71
+    description: d6a0239125f4b1284cc60afe04f2d08768cae89434e0b0fa3c2d756e3cca4ba5
+    name: b5cce646ce35862541212278c12d24cc64ad7be357f33b28e6a6b351718af10f
+    rubric:
+      fail: 663406fcf4289dfcd396eb527d855c43c1733dc08464a1389ea56f70a0bed12c
+      insufficient_evidence: b96dabea54a4da144804d84e5bc9d693fc94a4d70362d0481fd3d7df62baa880
+      not_applicable: c00f02c043ff77b646f626acc3f863cf09120ac05a6ab337961f866f2009263b
+      pass: 26d3f9d6615add31c05359e35d8a8dadea09c343e4e1f0810a8f84385d614349
+  safety:
+    applicability: f47a3d7b7a2bb3ac6f7aad5bbb9ca862a05208844a16d42d2f2ad978387d281d
+    description: 82787a1fdda0c0278e58a109183acebfc2aacd65dbc645f4b20858ece711534f
+    name: 5fa492fdc18a54cbc8aba144ba4051b7c6adfae35306c1a250cb7fb2c48f6760
+    rubric:
+      fail: c649dfed41f40c14b583f0d91c43744e8ccbc4928ba8381a0251a8673193fc81
+      insufficient_evidence: 6fa21d7e314de1f6d21392a1aaae882f60328fea2f42fbbd7e9048a2e6ab4685
+      pass: d2c96a150b3319fbd7bf4d39feaaba84f97e84fedd1e8cfd0b0dcfb41d787f75
+groups:
+  communication:
+    name: 3788e8b824468eff15c800704e6b35dbc55bd53865170cdc08f0c7960d3ab49f
+  controls:
+    name: 3b85ada3ec1d7b71c098bbddd528e5cdc2bbbc6d782f6db43227f900e238202c
+  handling:
+    name: 92f79fb28113a9342bd1e12b3d9e2b01c1931a9ecee4d070ddf295be3a310dfb
+  solution:
+    name: 289c9a2c89ab4fae6f91a9637c25cc6ae6c02f7efa0689e0d9fa91a659cef03c
+name: 843aa6fbfd2536a38c5dfc13c86c008c4d7e835c2b6df8c158134db12fdef2cb

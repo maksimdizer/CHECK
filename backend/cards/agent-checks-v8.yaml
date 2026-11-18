@@ -1,0 +1,64 @@
+# Internal prompts for the agent. The published criterion text defines the verdict.
+sequence:
+  - Does this criterion apply to the public support replies in scope?
+  - Which facts support or contradict the criterion, and which source IDs show them?
+  - Could missing history or an applicable policy change the answer?
+  - Which of the published rubric's verdicts fits the established facts?
+
+fallback:
+  - What observable behavior does the criterion ask you to check?
+  - Which specific reply shows that behavior or a material omission?
+
+criteria:
+  request_understanding:
+    - Which issue, requested result and stage of the process did the customer describe?
+    - Does the reply or clarification address that issue and the stated material constraints?
+    - Did support correct an initial misunderstanding later in the visible exchange?
+  diagnosis:
+    - What material facts and prior checks were visible to support at the time of the reply?
+    - Do the fact and reply concern the same item, service, party and stage?
+    - Which necessary clarification or diagnostic step was taken, missed or contradicted?
+  policy_accuracy:
+    - Which material claim or recommendation is being checked, and which supplied policy applied at the time?
+    - Does that policy cover the same situation and support or contradict the claim?
+    - Which part of the claim remains unverified because the policy or a required fact is missing?
+  completeness:
+    - Which distinct requests require their own answer, including implicit requests and requests introduced later?
+    - Which later reply directly supplies the requested information, confirms the requested action, or gives a definitive decision on this exact request?
+    - If the request remains pending, what concrete clarification or follow-up advances it, and what specifically links that step to this request?
+    - Does a newer or separate request still lack its own answer or next step, or does missing history prevent a decision?
+  clarity:
+    - Can the customer understand the main answer or decision?
+    - Where an action is required, are the action, channel and order clear where they matter?
+    - Which specific ambiguity would affect the customer's ability to act?
+  resolution_check:
+    - Was there a solution or follow-up whose effect needed verification?
+    - Is there confirmation that it worked, a concrete way to verify it or a justified next step?
+    - Does the visible continuation establish that the issue persisted and support stopped helping?
+  ownership:
+    - What action did the assessed participant commit to, who owns it, and what condition triggers it?
+    - What deadline or update time did support actually give? Treat vague timing such as shortly as missing when timing matters. A clear owner and next step with material timing missing can be partial under the rubric.
+    - Has each promise become due as of the observed time? Keep business days separate from calendar days and check that any stated prerequisite occurred.
+    - Which later source confirms fulfillment or a missed due commitment? A proposed action is not proof of execution. If the record ends before it is due or cannot establish fulfillment, apply the insufficient_evidence rule.
+  respect:
+    - What specific words or behavior demonstrate an appropriate or inappropriate tone?
+    - Is the wording neutral, or does it specifically dismiss, blame or pressure the customer?
+  customer_effort:
+    - What information or action did support ask the customer to provide or repeat?
+    - Was that exact information already available, was the action already tried, or was the request justified by a missing detail?
+    - Did any verified unnecessary step materially hinder access to support?
+  safety:
+    - Which exact words in the assessed public replies could demonstrate conduct covered by this rubric?
+    - Does the visible context establish the violation, including any rule that must be supplied?
+    - What conduct, if any, remains unverified because it is outside the visible record?
+
+coverage_rules: >-
+  Apply the coverage labels literally for every question_id. Use answered only when a later cited
+  reply supplies the requested information, confirms the requested action, or gives a direct
+  decision on that exact question. A promise, referral, clarification, pending review, or
+  request for details is next_step only when the cited reply shows how it advances that specific
+  question. A shared reply can cover multiple requests if its text or context establishes each
+  connection. A generic rule does not answer why a charge applied to this order. A question
+  about a defective item does not automatically address a separate report that messages went
+  unanswered. In basis, state exactly what was answered or which concrete action advances the
+  request. Apply the rubric to both answered and valid next_step rows when deciding completeness.

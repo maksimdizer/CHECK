@@ -1,0 +1,7 @@
+services:
+  worker:
+    environment:
+      MLX_PROMPT_CACHE: ${MLX_PROMPT_CACHE:-true}
+      OLLAMA_TIMEOUT_SECONDS: ${OLLAMA_TIMEOUT_SECONDS:-150}
+      QA_TASK_TIMEOUT_SECONDS: ${QA_TASK_TIMEOUT_SECONDS:-1800}
+    command: [celery, -A, qa.jobs, worker, --loglevel=INFO, --concurrency=1, --without-gossip, --without-mingle]

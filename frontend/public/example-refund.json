@@ -1,0 +1,28 @@
+{
+  "source": "import",
+  "language": "en",
+  "external_id": "QA-REFUND-1050",
+  "subject": "Duplicate charge refund",
+  "category": "refund",
+  "channel": "chat",
+  "status": "closed",
+  "messages_complete": true,
+  "events_complete": true,
+  "observed_at": "2026-11-12T10:30:00Z",
+  "refund": {
+    "decision": "approved",
+    "due_at": "2026-11-12T12:00:00Z",
+    "operation_id": "refund-1050",
+    "owner_id": "agent-1",
+    "completion_claim_message_id": "m2"
+  },
+  "messages": [
+    {"id": "m1", "actor_id": "customer-1", "author": "Customer", "role": "customer", "at": "2026-11-12T09:00:00Z", "text": "I was charged twice for my order. Please refund the duplicate charge."},
+    {"id": "m2", "actor_id": "agent-1", "author": "Anna", "role": "agent", "at": "2026-11-12T09:07:00Z", "text": "I refunded the duplicate charge. Check your bank transaction history. If the refund doesn’t appear, reply here and I’ll check its status."},
+    {"id": "m3", "actor_id": "customer-1", "author": "Customer", "role": "customer", "at": "2026-11-12T10:00:00Z", "text": "I received the refund. That resolves my issue, thank you."}
+  ],
+  "events": [
+    {"id": "e1", "actor_id": "billing", "kind": "refund_completed", "operation_id": "refund-1050", "at": "2026-11-12T09:06:00Z", "detail": "The duplicate charge was refunded. Transaction refund-1050 is complete."},
+    {"id": "e2", "actor_id": "system", "kind": "issue_resolved", "at": "2026-11-12T10:01:00Z", "detail": "The customer confirmed receipt of the refund and resolution of the issue."}
+  ]
+}

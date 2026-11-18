@@ -1,0 +1,155 @@
+# Internal prompts for the agent. The published criterion text defines the verdict.
+sequence:
+  - Does this criterion apply to the public support replies in scope?
+  - Which facts support or contradict the criterion, and which source IDs show them?
+  - Could missing history or an applicable policy change the answer?
+  - Which of the published rubric's verdicts fits the established facts?
+
+fallback:
+  - What observable behavior does the criterion ask you to check?
+  - Which specific reply shows that behavior or a material omission?
+
+criteria:
+  request_understanding:
+    - Which issue, requested result and stage of the process did the customer describe?
+    - Does the reply or clarification address that issue and the stated material constraints?
+    - Did support correct an initial misunderstanding later in the visible exchange?
+  diagnosis:
+    - What material facts and prior checks were visible to support at the time of the reply?
+    - Do the fact and reply concern the same item, service, party and stage?
+    - Which necessary clarification or diagnostic step was taken, missed or contradicted?
+  policy_accuracy:
+    - Which material claim or recommendation is being checked, and which supplied policy applied at the time?
+    - Does that policy cover the same situation and support or contradict the claim?
+    - Which part of the claim remains unverified because the policy or a required fact is missing?
+  completeness:
+    - Which distinct requests require their own answer, including implicit requests and requests introduced later?
+    - Which later reply directly supplies the requested information, confirms the requested action, or gives a definitive decision on this exact request?
+    - If the request remains pending, what concrete clarification or follow-up advances it, and what specifically links that step to this request?
+    - Does a newer or separate request still lack its own answer or next step, or does missing history prevent a decision?
+  clarity:
+    - Can the customer understand the main answer or decision?
+    - Where an action is required, are the action, channel and order clear where they matter?
+    - Which specific ambiguity would affect the customer's ability to act?
+  resolution_check:
+    - Was there a solution or follow-up whose effect needed verification?
+    - Is there confirmation that it worked, a concrete way to verify it or a justified next step?
+    - Does the visible continuation establish that the issue persisted and support stopped helping?
+  ownership:
+    - Which concrete route or next step is visible for each issue, and who can act through it? Is a material detail missing?
+    - What exact future action did the assessed support participant promise? Which independent source establishes the trigger and whether the action was kept or missed?
+    - Did a later source confirm that the same issue was actually resolved? Did that make the specific planned action unnecessary?
+    - Does an acknowledgement or update establish contact only, with the original issue still open or unknown?
+  respect:
+    - What specific words or behavior demonstrate an appropriate or inappropriate tone?
+    - Is the wording neutral, or does it specifically dismiss, blame or pressure the customer?
+  customer_effort:
+    - What information or action did support ask the customer to provide or repeat?
+    - Was that exact information already available, was the action already tried, or was the request justified by a missing detail?
+    - Did any verified unnecessary step materially hinder access to support?
+  safety:
+    - Which exact words in the assessed public replies could demonstrate conduct covered by this rubric?
+    - Does the visible context establish the violation, including any rule that must be supplied?
+    - What conduct, if any, remains unverified because it is outside the visible record?
+
+coverage_rules: >-
+  Apply the coverage labels literally for every question_id. Use answered only when a later cited
+  reply supplies the requested information, confirms the requested action, or gives a direct
+  decision on that exact question. A promise, referral, clarification, pending review, or
+  request for details is next_step only when the cited reply shows how it advances that specific
+  question. A shared reply can cover multiple requests if its text or context establishes each
+  connection. A generic rule does not answer why a charge applied to this order. A question
+  about a defective item does not automatically address a separate report that messages went
+  unanswered. In basis, state exactly what was answered or which concrete action advances the
+  request. Apply the rubric to both answered and valid next_step rows when deciding completeness.
+
+ownership_rules: >-
+  Return up to five rows for distinct material actions. Merge repeated promises
+  about the same action. If there are only routine answers or troubleshooting
+  instructions for the customer to try and report back, return no rows. Include
+  viable case-specific handoffs arranged by the assessed support participant.
+  Name the concrete action and the exact customer issue it concerns in plain
+  English, using a few words each. Do not use generic labels such as "commitment"
+  as action descriptions. Assess commitments made by the assessed participant or
+  explicitly taken on by them. Select a target support fragment as reply_id.
+  First check the next step. Clear means there is a usable case-specific action
+  or channel, with a party to take it. A usable secure-chat handoff can be clear
+  even if the customer has not joined. Incomplete means visibly missing a material
+  step or owner. Blocked requires a later source showing that there was no usable
+  route. Use none when there is no separate next step to assess. Use missing_material
+  when no useful timing was given for a material pending action or handoff update.
+  Available chat hours are not a resolution or reply deadline.
+  Separately check promise. Choose none for a route, request, explanation, or
+  immediate instruction without a distinct undertaking. A channel where support
+  can investigate later is a route; a promise to call, escalate or send an
+  update is an undertaking. A conditional undertaking needs a separate trigger_id
+  confirming its prerequisite. Use kept or missed only with a separate later
+  promise_evidence_id on the same action. A statement that someone reached out
+  can support contact; it cannot establish timeliness, the contents or resolution.
+  When no proof exists use unverified. Extract a quoted relative deadline from
+  reply_id using the outer limit and unit hours, days, business_days or
+  business_hours. Use null without a quoted relative deadline.
+  Finally check the original customer issue, independently of contact or
+  execution. Set issue_status to resolved only with later issue_evidence_id
+  explicitly confirming the requested result or recovery on that same issue.
+  Use open for direct evidence it persists and unknown when the record ends
+  without confirmation. An update, handoff, acknowledgement or an unrelated
+  resolution cannot close an issue. Reaching a representative through another
+  route does not establish that a broader complaint or escalated review was
+  resolved. Explicit restoration can make a planned investigation unnecessary.
+
+ownership_resolution_review: >-
+  For each indexed candidate, use the customer history, reply_id and
+  resolution_id to decide whether that later source explicitly establishes the
+  requested result for the exact same issue so that the outstanding promised
+  action is unnecessary. A contact, message, channel change, acknowledgement,
+  progress report, partial result or unrelated remedy is insufficient. If the
+  requested outcome was expressly restored and the promise only concerns
+  investigating that symptom, confirm the candidate. Return only the indices
+  that meet this test in confirmed.
+
+coverage_relations: >-
+  Return one coverage row per question_id. First select the eligible support fragment IDs,
+  then state in basis the actual information, decision, performed action or proposed step
+  for this exact question. Use no more than ten words. Then assign relation. Use
+  direct_answer when the reply actually provides what the customer asks for, performs it
+  or states a definitive decision. Use specific_next_step when the issue is still open but
+  the reply gives a concrete action that advances it. For a DM request identify the
+  information needed for that question or the action support will take. A transfer,
+  escalation, request for information or future review is a step, never a direct answer.
+  A generic statement or a step for a different request leaves a visible_gap; use
+  missing_history when the available sources cannot establish the answer or omission.
+  For a separate complaint that a message went unanswered, look for a reply that checks
+  its receipt, restores the channel, or addresses its status. A step on the underlying
+  service issue does not by itself cover the communication gap. A generic rule does not
+  explain why a specific transaction was charged. A reply may cover several requests
+  only when the link to each is evidenced. A repeat
+  request for information already sent needs a new reason before it counts as a step.
+  If the customer asked when, the step must help establish the timing itself. Use only
+  each question's eligible_support_ids, and decide the overall verdict by the rubric
+  after checking that every material question has a direct answer or specific step.
+
+normalize_ownership_evidence: true
+
+request_extraction_rules: >-
+  Track distinct requested deliverables. Merge repeated updates, no-contact complaints,
+  and paraphrases about the same pending action into one request with the relevant
+  customer IDs. Separate a new request only if it needs a different answer or action.
+  A wish for a good outcome, thanks, or a complaint about how long the same issue has
+  lasted does not by itself request a date, cause, or contact channel. Keep substantive
+  implicit requests where the text shows what the customer wants support to do.
+
+validate_gap_verdict: true
+
+preserve_partial_with_unknown: true
+
+missed_promise_review: >-
+  For each listed promise, inspect only the later_ids listed for that promise.
+  The elapsed time filter is already applied. Return a reply_id and later_id only
+  when the later source explicitly gives the status of this exact action and
+  shows that support did not perform it. A customer's report that the callback
+  still did not arrive can support a missed callback if it refers to the same
+  callback. Silence, an unrelated complaint, a generic escalation or an
+  unresolved outcome is insufficient. Return an empty evidence list for
+  promises without reliable proof. Do not infer a missing reply from the end
+  of the history.

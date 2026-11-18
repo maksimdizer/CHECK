@@ -1,0 +1,213 @@
+id: standard
+version: 6
+name: Support Quality Scorecard
+groups:
+  - {id: solution, name: Understanding and resolution, weight: 50}
+  - {id: communication, name: Communication, weight: 15}
+  - {id: handling, name: Case handling and outcome, weight: 35}
+  - {id: controls, name: Control checks, weight: 0}
+timing_targets:
+  first_response:
+    channel_seconds: {chat: 900}
+  time_to_close: {}
+criteria:
+  - id: request_understanding
+    group_id: solution
+    version: 1
+    name: Request understanding
+    description: Support correctly identifies the main issue and accounts for explicitly stated constraints. Missed individual questions are evaluated under Response completeness.
+    applicability: Public support reply with the customer's request available
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The reply or clarifying question addresses the main issue and known constraints.
+      partial: Support recognizes the main issue but misses a material constraint.
+      fail: Support addresses a different issue or clearly misunderstands the request.
+      not_applicable: There is no substantive request, for example, a greeting alone.
+      insufficient_evidence: The original request or necessary context is unavailable.
+    weight: 10
+    severity: standard
+    review_policy: on_fail
+  - id: diagnosis
+    group_id: solution
+    version: 1
+    name: Diagnosis
+    description: Clarifying questions help identify a solution and account for known facts and findings from earlier steps. Do not expect support to know a cause discovered later.
+    applicability: The cause or circumstances of the issue need clarification
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: Support gathers the necessary information and uses findings from previous checks consistently.
+      partial: There is a specific minor omission in the sequence of diagnostic steps.
+      fail: Support ignores material facts or findings and continues with inappropriate diagnostic steps.
+      not_applicable: A direct answer or an obvious action requires no diagnosis.
+      insufficient_evidence: The available history does not establish whether the diagnosis was justified.
+    weight: 10
+    severity: standard
+    review_policy: on_fail
+  - id: policy_accuracy
+    group_id: solution
+    version: 2
+    name: Policy accuracy
+    description: Claims and recommendations match the policies in effect and available to the participant at the time of the reply. A lack of confirmation does not establish a contradiction.
+    applicability: Public support reply with verifiable claims or recommendations
+    evaluator_type: hybrid
+    required_evidence: [message, knowledge]
+    rubric:
+      pass: The available policies support all material verifiable claims.
+      partial: The main solution is correct, but a material instruction conflicts with policy.
+      fail: The key solution directly contradicts policy.
+      not_applicable: There are no verifiable claims or recommendations.
+      insufficient_evidence: There is insufficient policy documentation to verify the material claims.
+    weight: 20
+    severity: standard
+    review_policy: on_fail
+  - id: completeness
+    group_id: solution
+    version: 1
+    name: Response completeness
+    description: The reply addresses material questions and necessary conditions. Assess unclear wording and technical errors under their respective criteria.
+    applicability: Public support reply to the customer's questions
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: Support answers all material questions or clearly identifies the clarification or follow-up needed for each.
+      partial: Support addresses the main question but misses another material question or condition.
+      fail: Support leaves the main question unanswered without a justified next step.
+      not_applicable: There is no substantive question, for example, a thank-you alone.
+      insufficient_evidence: The customer's questions or the completeness of the reply cannot be determined.
+    weight: 10
+    severity: standard
+    review_policy: on_fail
+  - id: clarity
+    group_id: communication
+    version: 2
+    name: Clarity and actionability
+    description: The customer can tell what to do, where to do it, and in what order. Assess accuracy and missed questions separately.
+    applicability: Public support reply
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The wording is clear and any required actions are specific and ordered.
+      partial: The reply is mostly clear, but a material instruction or step is ambiguous.
+      fail: The customer cannot understand or carry out the main proposed action from the reply.
+      not_applicable: The reply contains no explanation or action, for example, a greeting alone.
+      insufficient_evidence: The reply or necessary context is unavailable.
+    weight: 10
+    severity: standard
+    review_policy: on_fail
+  - id: resolution_check
+    group_id: handling
+    version: 1
+    name: Resolution verification
+    description: Support verifies that the solution worked or provides a justified next step. An unresolved issue alone is insufficient to establish a support error.
+    applicability: Support proposes a solution or the issue requires further work
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: Support verifies the outcome or explains how to verify it and what to do if the solution fails. A justified handoff is acceptable.
+      partial: Support identifies a check or next step, but a material detail is unclear.
+      fail: The issue clearly persists and support stops helping without verifying the result or offering a next step.
+      not_applicable: A direct informational reply is sufficient and the result requires no verification.
+      insufficient_evidence: The necessary follow-up is unavailable. Silence from the customer does not establish a failure.
+    weight: 15
+    severity: standard
+    review_policy: on_fail
+  - id: ownership
+    group_id: handling
+    version: 1
+    name: Case ownership and commitments
+    description: The next step, owner, and timing are clear, and support keeps verifiable commitments. Evaluate only the commitments of the participant being assessed.
+    applicability: There is a commitment, waiting period, handoff, or need for further action by support
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The actions and responsibilities are clear, and the available history shows that due commitments were kept.
+      partial: There is a next step, but a material detail about timing or responsibility is missing.
+      fail: A missed commitment is confirmed, or a handoff leaves the customer without a clear way forward.
+      not_applicable: There are no commitments, waiting periods, or further support actions.
+      insufficient_evidence: The commitment is not yet due or there is insufficient evidence to verify it. A missing event in an incomplete log does not establish a failure.
+    weight: 10
+    severity: standard
+    review_policy: on_fail
+  - id: respect
+    group_id: communication
+    version: 1
+    name: Respectful and appropriate tone
+    description: Communication is respectful and appropriate. Do not require scripted apologies, emotional expression, or a particular style.
+    applicability: Public support reply
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The reply is respectful and appropriate, including brief neutral replies.
+      partial: The reply contains specific inappropriate wording without explicit humiliation or pressure.
+      fail: The reply blames the customer, pressures them, or dismisses their concern.
+      insufficient_evidence: There is insufficient text to make a supported assessment.
+    weight: 5
+    severity: standard
+    review_policy: on_fail
+  - id: customer_effort
+    group_id: handling
+    version: 1
+    name: Customer effort
+    description: Support avoids requesting information or actions already provided and avoids unnecessary handoffs. Identify the specific unnecessary step. A justified check or secure handoff is acceptable.
+    applicability: Support asks the customer to provide information or take action
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The actions are necessary and account for information already provided.
+      partial: There is one verified unnecessary or repeated request that does not block assistance.
+      fail: Verified repeats or unnecessary handoffs materially hinder access to support.
+      not_applicable: Support requests no information or action from the customer.
+      insufficient_evidence: Prior actions or the reason for the handoff are unknown.
+    weight: 5
+    severity: standard
+    review_policy: on_fail
+  - id: response_present
+    group_id: controls
+    version: 2
+    name: Response presence
+    description: A public support reply follows the customer's request. This check does not contribute to the quality score.
+    applicability: Public conversation with the customer
+    evaluator_type: code
+    required_evidence: [message]
+    rubric:
+      pass: A public support reply follows the customer's message.
+      fail: The complete history contains no reply from support.
+      not_applicable: There is no public customer message in the complete history.
+      insufficient_evidence: The incomplete history prevents verification of the reply.
+    weight: 0
+    severity: standard
+    review_policy: on_fail
+  - id: action_trace
+    group_id: controls
+    version: 2
+    name: Refund verification
+    description: Verify that an established refund obligation was fulfilled by its due date or that a claimed refund was completed. The ticket category alone does not establish an obligation to refund.
+    applicability: Refund at ticket level or for the responsible participant
+    category: refund
+    evaluator_type: code
+    required_evidence: [event, message]
+    rubric:
+      pass: The required refund transaction is confirmed.
+      fail: The complete log has no matching refund transaction even though the obligation and due date are established or support claimed completion.
+      not_applicable: The refund is not required, a decision is pending, the refund is not yet due, or the scope is another participant or a single message.
+      insufficient_evidence: The obligation, due date, transaction, owner, or completeness of the log is unknown.
+    weight: 0
+    severity: critical
+    review_policy: on_fail
+  - id: safety
+    group_id: controls
+    version: 1
+    name: Safety and unacceptable conduct
+    description: Check for explicit disclosure of secrets, requests for passwords or verification codes in public, insults, threats, and discrimination. Apply required checks and industry restrictions only when supported by the supplied rules.
+    applicability: Observable public replies from support
+    evaluator_type: llm
+    required_evidence: [message]
+    rubric:
+      pass: The available replies show none of the listed violations. Actions outside the visible history are unverified.
+      fail: A specific violation is supported by a quote from a support reply.
+      insufficient_evidence: The available context is insufficient to establish whether the evaluated replies contain a violation.
+    weight: 0
+    severity: critical
+    review_policy: on_fail

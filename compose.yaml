@@ -1,0 +1,98 @@
+name: check
+x-backend: &backend
+  image: check-backend:local
+  build: ./backend
+  environment: &backend-env
+    DATABASE_URL: postgresql+psycopg://qa:${POSTGRES_PASSWORD:-qa-local}@db/qa
+    BROKER_URL: amqp://qa:${RABBITMQ_PASSWORD:-qa-local}@broker:5672//
+    QA_TOKEN: ${QA_TOKEN:-}
+    QA_ORG: ${QA_ORG:-local}
+    QA_DEMO: ${QA_DEMO:-true}
+    QA_MODEL: ${QA_MODEL:-}
+    QA_AGENT_MODE: ${QA_AGENT_MODE:-false}
+    QA_AGENT_QUALITY: ${QA_AGENT_QUALITY:-false}
+    OLLAMA_NUM_PREDICT: ${OLLAMA_NUM_PREDICT:-1200}
+    OLLAMA_THINK: ${OLLAMA_THINK:-}
+    OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+  extra_hosts:
+    - host.docker.internal:host-gateway
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: qa
+      POSTGRES_USER: qa
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-qa-local}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U qa -d qa]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  broker:
+    image: rabbitmq:4-alpine
+    environment:
+      RABBITMQ_DEFAULT_USER: qa
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-qa-local}
+    volumes:
+      - rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: [CMD, rabbitmq-diagnostics, -q, ping]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  api:
+    <<: *backend
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+  worker:
+    <<: *backend
+    restart: unless-stopped
+    command: [celery, -A, qa.jobs, worker, --loglevel=INFO, --concurrency=2, --without-gossip, --without-mingle]
+    depends_on:
+      api:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+  dispatcher:
+    <<: *backend
+    restart: unless-stopped
+    command: [python, -m, qa.dispatch]
+    depends_on:
+      api:
+        condition: service_healthy
+      broker:
+        condition: service_healthy
+  zendesk:
+    <<: *backend
+    profiles: [zendesk]
+    restart: unless-stopped
+    command: [python, -m, qa.zendesk]
+    environment:
+      <<: *backend-env
+      ZENDESK_SUBDOMAIN: ${ZENDESK_SUBDOMAIN:-}
+      ZENDESK_CLIENT_ID: ${ZENDESK_CLIENT_ID:-}
+      ZENDESK_CLIENT_SECRET: ${ZENDESK_CLIENT_SECRET:-}
+      ZENDESK_START_AT: ${ZENDESK_START_AT:-}
+      ZENDESK_POLL_SECONDS: ${ZENDESK_POLL_SECONDS:-120}
+      ZENDESK_LANGUAGE: ${ZENDESK_LANGUAGE:-en}
+    depends_on:
+      api:
+        condition: service_healthy
+  web:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${QA_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  postgres:
+  rabbitmq:

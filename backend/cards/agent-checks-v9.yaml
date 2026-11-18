@@ -1,0 +1,101 @@
+# Internal prompts for the agent. The published criterion text defines the verdict.
+sequence:
+  - Does this criterion apply to the public support replies in scope?
+  - Which facts support or contradict the criterion, and which source IDs show them?
+  - Could missing history or an applicable policy change the answer?
+  - Which of the published rubric's verdicts fits the established facts?
+
+fallback:
+  - What observable behavior does the criterion ask you to check?
+  - Which specific reply shows that behavior or a material omission?
+
+criteria:
+  request_understanding:
+    - Which issue, requested result and stage of the process did the customer describe?
+    - Does the reply or clarification address that issue and the stated material constraints?
+    - Did support correct an initial misunderstanding later in the visible exchange?
+  diagnosis:
+    - What material facts and prior checks were visible to support at the time of the reply?
+    - Do the fact and reply concern the same item, service, party and stage?
+    - Which necessary clarification or diagnostic step was taken, missed or contradicted?
+  policy_accuracy:
+    - Which material claim or recommendation is being checked, and which supplied policy applied at the time?
+    - Does that policy cover the same situation and support or contradict the claim?
+    - Which part of the claim remains unverified because the policy or a required fact is missing?
+  completeness:
+    - Which distinct requests require their own answer, including implicit requests and requests introduced later?
+    - Which later reply directly supplies the requested information, confirms the requested action, or gives a definitive decision on this exact request?
+    - If the request remains pending, what concrete clarification or follow-up advances it, and what specifically links that step to this request?
+    - Does a newer or separate request still lack its own answer or next step, or does missing history prevent a decision?
+  clarity:
+    - Can the customer understand the main answer or decision?
+    - Where an action is required, are the action, channel and order clear where they matter?
+    - Which specific ambiguity would affect the customer's ability to act?
+  resolution_check:
+    - Was there a solution or follow-up whose effect needed verification?
+    - Is there confirmation that it worked, a concrete way to verify it or a justified next step?
+    - Does the visible continuation establish that the issue persisted and support stopped helping?
+  ownership:
+    - What action did the assessed participant commit to, who owns it, and what condition triggers it?
+    - What deadline or update time did support actually give? Treat vague timing such as shortly as missing when timing matters. A clear owner and next step with material timing missing can be partial under the rubric.
+    - Has each promise become due as of the observed time? Keep business days separate from calendar days and check that any stated prerequisite occurred.
+    - Which later source confirms fulfillment or a missed due commitment? A proposed action is not proof of execution. If the record ends before it is due or cannot establish fulfillment, apply the insufficient_evidence rule.
+  respect:
+    - What specific words or behavior demonstrate an appropriate or inappropriate tone?
+    - Is the wording neutral, or does it specifically dismiss, blame or pressure the customer?
+  customer_effort:
+    - What information or action did support ask the customer to provide or repeat?
+    - Was that exact information already available, was the action already tried, or was the request justified by a missing detail?
+    - Did any verified unnecessary step materially hinder access to support?
+  safety:
+    - Which exact words in the assessed public replies could demonstrate conduct covered by this rubric?
+    - Does the visible context establish the violation, including any rule that must be supplied?
+    - What conduct, if any, remains unverified because it is outside the visible record?
+
+coverage_rules: >-
+  Apply the coverage labels literally for every question_id. Use answered only when a later cited
+  reply supplies the requested information, confirms the requested action, or gives a direct
+  decision on that exact question. A promise, referral, clarification, pending review, or
+  request for details is next_step only when the cited reply shows how it advances that specific
+  question. A shared reply can cover multiple requests if its text or context establishes each
+  connection. A generic rule does not answer why a charge applied to this order. A question
+  about a defective item does not automatically address a separate report that messages went
+  unanswered. In basis, state exactly what was answered or which concrete action advances the
+  request. Apply the rubric to both answered and valid next_step rows when deciding completeness.
+
+ownership_rules: >-
+  Return actions and a short explanation in English. Include every materially distinct
+  future action that support owns or commits to, up to six. Do not include customer-only
+  steps or a generic invitation to ask more questions. Pick a target support fragment as
+  reply_id, cite status_ids, and name the specific action. timing is stated for a concrete time or explicit deadline, missing_material
+  for a material deadline that is missing or vague, and not_needed only when timing is
+  immaterial to this action. Use conditional and trigger_id to identify whether the
+  action depends on a prior event and the source proving it occurred. Mark clear_step
+  for a clear next action without an outstanding promise to verify, fulfilled only
+  with an actual event or statement of completion, pending or unknown when performance
+  cannot yet be checked, missed only when a later source shows nonperformance after
+  the due time, or blocked_handoff when support left no viable path. status_ids should
+  cite the sources establishing that specific status. Extract a relative deadline into
+  deadline with an exact quote from reply_id, the outer limit of a range, and unit
+  hours, days, business_days, or business_hours. For example, within one to three
+  business days has amount 3 and unit business_days. Never replace business days with
+  calendar days. If there is no relative deadline, use null. Explain the next step,
+  its owner, and any uncertainty about timing or execution. Do not infer an action
+  occurred from a promise or treat incomplete history as proof of breach.
+
+coverage_relations: >-
+  Return one coverage row per question_id. First select the eligible support fragment IDs,
+  then state in basis the actual information, decision, performed action or proposed step
+  for this exact question. Use no more than ten words. Then assign relation. Use
+  direct_answer when the reply actually provides what the customer asks for, performs it
+  or states a definitive decision. Use specific_next_step when the issue is still open but
+  the reply gives a concrete action that advances it. For a DM request identify the
+  information needed for that question or the action support will take. A transfer,
+  escalation, request for information or future review is a step, never a direct answer.
+  A generic statement or a step for a different request leaves a visible_gap; use
+  missing_history when the available sources cannot establish the answer or omission.
+  A reply may cover several requests only when the link to each is evidenced. A repeat
+  request for information already sent needs a new reason before it counts as a step.
+  If the customer asked when, the step must help establish the timing itself. Use only
+  each question's eligible_support_ids, and decide the overall verdict by the rubric
+  after checking that every material question has a direct answer or specific step.
